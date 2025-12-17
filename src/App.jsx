@@ -20,7 +20,7 @@ function App() {
 
       {/* Contributors */}
       <p className="text-sm text-gray-500">
-        Contributors: Ganesh Borole, Himanshu
+        Contributors: Ganesh Borole, Himanshu Tambe
       </p>
 
       <div className="card bg-gray-700 p-4 rounded">
