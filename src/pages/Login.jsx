@@ -22,53 +22,56 @@ export default function LoginPage() {
     <div className="flex flex-col md:flex-row h-screen z-10">
       {/* ---------- LEFT SIDE ---------- */}
       <div className="hidden md:flex w-1/2 relative items-center justify-center overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
-          alt="Teamwork Office"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 via-black/60 to-gray-900/70"></div>
+      {/* Background Image (updated) */}
+      <img
+        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=80"
+        alt="Team Collaboration Office"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
-        <div className="relative z-10 text-center text-white px-8">
-          <motion.h1
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="text-5xl font-extrabold mb-4 leading-tight"
-          >
-            Empower Your <br />
-            <span className="text-blue-400">Digital Workspace</span>
-          </motion.h1>
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 via-black/60 to-gray-900/70" />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="text-lg max-w-md mx-auto opacity-90"
-          >
-            Manage your workflow efficiently and securely — built with cutting-edge
-            technology for modern professionals.
-          </motion.p>
+      {/* Content */}
+      <div className="relative z-10 text-center text-white px-8">
+        <motion.h1
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-5xl font-extrabold mb-4 leading-tight"
+        >
+          Empower Your <br />
+          <span className="text-gray-500">Your secure digital workspace, simplified.</span>
+        </motion.h1>
 
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="mt-10 text-sm uppercase tracking-widest text-gray-300"
-          >
-            <span className="border border-gray-400 px-4 py-2 rounded-full backdrop-blur-md bg-white/10">
-              Powered by WebSeeder
-            </span>
-          </motion.div>
-        </div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+          className="text-lg max-w-md mx-auto opacity-90"
+        >
+         Manage your workflow securely and efficiently using cutting-edge technology designed for modern professionals.
+        </motion.p>
 
-        {/* Logo watermark at corner */}
-        <img
-          src="./WebSeederLogo.jpeg"
-          alt="Watermark"
-          className="absolute bottom-6 right-6 w-16 h-16 opacity-60 rounded-full"
-        />
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-10 text-sm uppercase tracking-widest text-gray-300"
+        >
+          <span className="border border-gray-400 px-4 py-2 rounded-full backdrop-blur-md bg-white/10">
+            Powered by WebSeeder
+          </span>
+        </motion.div>
       </div>
+
+      {/* Watermark */}
+      <img
+        src="/WebSeederLogo.jpeg"
+        alt="WebSeeder Watermark"
+        className="absolute bottom-6 right-6 w-16 h-16 opacity-60 rounded-full pointer-events-none select-none"
+      />
+    </div>
 
       {/* ---------- RIGHT SIDE ---------- */}
       <div className="flex w-full md:w-1/2 items-center justify-center bg-white px-8">
@@ -94,7 +97,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none transition"
               />
             </div>
 
@@ -108,7 +111,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none transition"
               />
             </div>
 
@@ -121,7 +124,7 @@ export default function LoginPage() {
             <div className="flex flex-col sm:flex-row gap-3 mt-4">
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition-all"
+                className="w-full bg-gray-500 hover:bg-gray-700 text-white py-2 rounded-lg font-semibold transition-all"
               >
                 Log In
               </button>
@@ -138,7 +141,7 @@ export default function LoginPage() {
 
           <p className="text-center text-gray-500 text-sm mt-8">
             Secured by{" "}
-            <span className="font-semibold text-blue-600">
+            <span className="font-semibold text-gray-600">
               WebSeeder Technology
             </span>
           </p>
