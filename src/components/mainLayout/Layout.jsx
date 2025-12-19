@@ -3,13 +3,15 @@ import DashboardNavbar from "../Navbar";
 import Sidebar from "../Sidebar";
 
 export default function Layout({ children }) {
-  const [expanded, setExpanded] = useState(false); // click open/close
-  const [hovered, setHovered] = useState(false);   // hover open
+  const [expanded, setExpanded] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
   const isOpen = expanded || hovered;
 
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="h-screen bg-gray-100 relative overflow-hidden">
+      
+      {/* Sidebar (OVERLAY MODE) */}
       <Sidebar
         expanded={expanded}
         setExpanded={setExpanded}
@@ -17,16 +19,13 @@ export default function Layout({ children }) {
         setHovered={setHovered}
       />
 
-      <div
-        className="flex flex-col min-h-screen transition-all duration-300"
-        style={{ marginLeft: isOpen ? "16rem" : "4rem" }}
-      >
-        <DashboardNavbar onMenuClick={() => setExpanded(!expanded)} />
+      {/* Navbar (FIXED, NEVER MOVES) */}
+      <DashboardNavbar sidebarOpen={isOpen} />
 
-        <main className="flex-1 overflow-y-auto p-6">
-          {children}
-        </main>
-      </div>
+      {/* MAIN CONTENT (NEVER MOVES) */}
+      <main className="pt-16 p-6 min-h-screen">
+        {children}
+      </main>
     </div>
   );
 }
