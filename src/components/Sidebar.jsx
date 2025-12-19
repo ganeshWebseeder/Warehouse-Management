@@ -37,7 +37,7 @@ export default function Sidebar({
         fixed z-40 h-full bg-white border-r
         transition-all duration-300 ease-in-out
         overflow-hidden flex flex-col
-        ${isOpen ? "w-64" : "w-16"}
+        ${isOpen ? "w-60" : "w-16"}
       `}
     >
       {/* ================= HEADER ================= */}
@@ -150,7 +150,7 @@ export default function Sidebar({
       </nav>
 
       {/* ================= LOGOUT ================= */}
-      <div className="px-2 py-3 border-t">
+      <div className="px-2 py-2 border-t">
         <button
           onClick={handleLogout}
           className="

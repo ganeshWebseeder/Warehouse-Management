@@ -16,23 +16,32 @@ export default function Support() {
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl font-bold">Support / Help Desk</h1>
-        <button
-          onClick={() => setShowForm(true)}
-          className="bg-black text-white px-4 py-2 rounded-md hover:bg-black"
-        >
-          + Create Ticket
-        </button>
-      </div>
+  <div className="flex justify-between items-center ml-16 md:ml-10 transition-all duration-300">
+  <h1 className="text-2xl font-semibold text-black">
+    Support / Help Desk
+  </h1>
+
+  <button
+    onClick={() => setShowForm(true)}
+    className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-900"
+  >
+    + Create Ticket
+  </button>
+</div>
+
 
       {/* Create Ticket */}
-      {showForm && (
-        <CreateTicketForm
-          onClose={() => setShowForm(false)}
-          onSubmit={addTicket}
-        />
-      )}
+    {showForm && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <CreateTicketForm
+      onClose={() => setShowForm(false)}
+      onSubmit={addTicket}
+    />
+  </div>
+)}
+
+
+
 
       {/* Ticket Table */}
       <TicketTable

@@ -47,7 +47,7 @@ export default function DashboardNavbar({ onMenuClick }) {
 
   return (
     <header className="w-full bg-white border-b shadow-sm sticky top-0 z-30">
-      <div className="flex items-center justify-between px-6 py-3">
+      <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-4">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -128,7 +128,9 @@ export default function DashboardNavbar({ onMenuClick }) {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+<div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+
+
                 {/* ===== USER INFO (WITH ICON) ===== */}
                 <div className="flex items-start gap-3 px-4 py-3 border-b">
                   <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
