@@ -4,6 +4,7 @@ import Login from "./pages/Login.jsx";
 import Layout from "./components/mainLayout/Layout.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AdminUsers from "./pages/AdminUserManagement.jsx";
+import Support from "./pages/Support.jsx";
 
 function App() {
   return (
@@ -28,6 +29,15 @@ function App() {
           element={
             <Layout>
               <AdminUsers />
+            </Layout>
+          }
+        />
+     
+      <Route
+          path="/support"
+          element={
+            <Layout>
+              <Support />
             </Layout>
           }
         />
