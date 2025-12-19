@@ -1,22 +1,21 @@
-import DashboardNavbar from "../Dashboard/Navbar";
-import Sidebar from "../Dashboard/Sidebar";
-
-
+import { useState } from "react";
+import DashboardNavbar from "../Navbar";
+import Sidebar from "../Sidebar";
 
 export default function Layout({ children }) {
-  return (
-    <div className="h-screen flex overflow-hidden bg-gray-100">
-      
-      {/* Sidebar */}
-      <Sidebar />
+  const [expanded, setExpanded] = useState(false);
 
-      {/* Main Content Area */}
-      <div className="flex flex-col flex-1">
-        
-        {/* Navbar */}
+  return (
+    <div className="h-screen bg-gray-100">
+      
+      <Sidebar expanded={expanded} setExpanded={setExpanded} />
+
+      <div
+        className="flex flex-col min-h-screen transition-all duration-300"
+        style={{ marginLeft: expanded ? "16rem" : "4rem" }}
+      >
         <DashboardNavbar />
 
-        {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>

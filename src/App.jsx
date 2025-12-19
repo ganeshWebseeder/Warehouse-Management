@@ -1,20 +1,39 @@
-//import { BrowserRouter } from "react-router";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Login from "./pages/Login.jsx";
 import Layout from "./components/mainLayout/Layout.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import AdminUsers from "./pages/AdminUserManagement.jsx";
 
 function App() {
   return (
- 
+    <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        {/* Login */}
+        <Route path="/" element={<Login />} />
 
-         <Route path="/dashboard" element={
-          <Layout>
-          
-            </Layout>} />
+        {/* Dashboard */}
+        <Route
+          path="/dashboard"
+          element={
+            <Layout>
+              <Dashboard />
+            </Layout>
+          }
+        />
+
+        {/* Admin User Management */}
+        <Route
+          path="/admin-users"
+          element={
+            <Layout>
+              <AdminUsers />
+            </Layout>
+          }
+        />
       </Routes>
-    
+    </BrowserRouter>
   );
 }
+
 export default App;
