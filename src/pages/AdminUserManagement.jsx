@@ -1,9 +1,24 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setPage } from "../store/pageSlice";
+
 import { Search, Plus, Eye, Pencil, Trash2, Shield } from "lucide-react";
 
 export default function AdminUsers() {
+  const dispatch = useDispatch();
+
+  // 🔹 Set Navbar Page Title using Redux
+  useEffect(() => {
+    dispatch(
+      setPage({
+        title: "Admin Users",
+        subTitle: "User Management",
+      })
+    );
+  }, [dispatch]);
+
   return (
     <div className="p-6 bg-[#fffdfb] min-h-screen">
-
       {/* Header */}
       <div className="bg-white rounded-xl p-6 mb-6 border border-[#E6DAD6]">
         <div className="flex items-center justify-between">
@@ -31,7 +46,10 @@ export default function AdminUsers() {
           { label: "Inactive Admins", value: 1 },
           { label: "Active Modules", value: 13 },
         ].map((item, i) => (
-          <div key={i} className="bg-white border border-[#E6DAD6] rounded-xl p-5">
+          <div
+            key={i}
+            className="bg-white border border-[#E6DAD6] rounded-xl p-5"
+          >
             <p className="text-sm text-gray-500">{item.label}</p>
             <p className="text-2xl font-semibold text-black">
               {item.value}
@@ -71,7 +89,6 @@ export default function AdminUsers() {
           </thead>
 
           <tbody className="divide-y">
-            {/* Row */}
             <AdminRow
               name="John Manager"
               email="john@admin.com"
