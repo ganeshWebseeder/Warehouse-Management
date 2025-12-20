@@ -1,7 +1,6 @@
 import {
   LayoutDashboard,
   Users,
-  CreditCard,
   FileText,
   Settings,
   X,
@@ -16,15 +15,15 @@ export default function Sidebar({ open, setOpen }) {
   const navigate = useNavigate();
   const [mastersOpen, setMastersOpen] = useState(false);
 
+  // ✅ FIXED LOGOUT (FORCE REDIRECT)
   const handleLogout = () => {
     localStorage.clear();
-    setOpen(false);
-    navigate("/");
+    window.location.replace("/");
   };
 
   return (
     <>
-      {/* Mobile Overlay */}
+      {/* ================= MOBILE OVERLAY ================= */}
       {open && (
         <div
           className="fixed inset-0 z-30 md:hidden"
@@ -32,7 +31,7 @@ export default function Sidebar({ open, setOpen }) {
         />
       )}
 
-      {/* Sidebar */}
+      {/* ================= SIDEBAR ================= */}
       <aside
         className={`
           group fixed z-40 h-full bg-white border-r
@@ -43,8 +42,8 @@ export default function Sidebar({ open, setOpen }) {
           md:left-0 md:w-16 md:hover:w-64
         `}
       >
-        {/* Header */}
-        <div className="h-16 flex items-center gap-3 px-4 py-9 border-b-gray-700">
+        {/* ================= HEADER ================= */}
+        <div className="h-16 flex items-center gap-3 px-4 border-b">
           <img
             src="/WebSeederLogo.jpeg"
             alt="WebSeeder Logo"
@@ -55,9 +54,11 @@ export default function Sidebar({ open, setOpen }) {
             className={`
               text-sm font-medium whitespace-nowrap
               transition-all duration-200
-              ${open
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"}
+              ${
+                open
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"
+              }
             `}
           >
             WebSeeder
@@ -71,18 +72,29 @@ export default function Sidebar({ open, setOpen }) {
           </button>
         </div>
 
-        {/* Menu */}
+        {/* ================= MENU ================= */}
         <nav className="flex-1 px-2 py-4 space-y-1">
-          <SidebarItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" open={open} setOpen={setOpen} />
-          <SidebarItem to="/admin-users" icon={Users} label="Admin Users" open={open} setOpen={setOpen} />
+          <SidebarItem
+            to="/dashboard"
+            icon={LayoutDashboard}
+            label="Dashboard"
+            open={open}
+            setOpen={setOpen}
+          />
+
+          <SidebarItem
+            to="/admin-users"
+            icon={Users}
+            label="Admin Users"
+            open={open}
+            setOpen={setOpen}
+          />
 
           {/* ===== Masters Dropdown ===== */}
           <div
-            className="relative"
             onMouseEnter={() => !open && setMastersOpen(true)}
             onMouseLeave={() => !open && setMastersOpen(false)}
           >
-            {/* Masters Parent */}
             <button
               onClick={() => setMastersOpen(!mastersOpen)}
               className="
@@ -91,17 +103,13 @@ export default function Sidebar({ open, setOpen }) {
                 hover:bg-gray-100 transition-colors
               "
             >
-              <div className="w-5 h-5 flex items-center justify-center shrink-0">
-                <Database size={18} />
-              </div>
+              <Database size={18} />
 
               <span
                 className={`
                   whitespace-nowrap
                   transition-opacity duration-200
-                  ${open
-                    ? "opacity-100"
-                    : "opacity-0 md:group-hover:opacity-100"}
+                  ${open ? "opacity-100" : "opacity-0 md:group-hover:opacity-100"}
                 `}
               >
                 Masters
@@ -117,14 +125,8 @@ export default function Sidebar({ open, setOpen }) {
               />
             </button>
 
-            {/* Dropdown Items */}
             {mastersOpen && (
-              <div
-                className="
-                  ml-9 mt-1 space-y-1
-                  border-l border-gray-200 pl-3
-                "
-              >
+              <div className="ml-9 mt-1 space-y-1 border-l border-gray-200 pl-3">
                 <DropdownItem to="/masters/item-master" label="Item Master" setOpen={setOpen} />
                 <DropdownItem to="/masters/create-item" label="Create Item" setOpen={setOpen} />
                 <DropdownItem to="/masters/unit-master" label="Unit Master" setOpen={setOpen} />
@@ -132,31 +134,47 @@ export default function Sidebar({ open, setOpen }) {
             )}
           </div>
 
-          <SidebarItem to="/support" icon={FileText} label="Support" open={open} setOpen={setOpen} />
-          <SidebarItem to="/settings" icon={Settings} label="Settings" open={open} setOpen={setOpen} />
+          <SidebarItem
+            to="/support"
+            icon={FileText}
+            label="Support"
+            open={open}
+            setOpen={setOpen}
+          />
+
+          <SidebarItem
+            to="/settings"
+            icon={Settings}
+            label="Settings"
+            open={open}
+            setOpen={setOpen}
+          />
         </nav>
 
-        {/* Logout */}
-        <div className="px-2 py-3 border-t">
+        {/* ================= LOGOUT ================= */}
+        <div className="px-1 py-1 border-t">
           <button
-            onClick={handleLogout}
+            onClick={(e) => {
+              e.stopPropagation(); // ✅ prevent overlay interference
+              handleLogout();
+            }}
             className="
               w-full flex items-center gap-3 px-3 py-2 rounded-lg
               text-sm font-medium text-red-600
-              hover:bg-red-50 transition-colors
+              hover:bg-red-300 transition-colors
             "
           >
-            <div className="w-5 h-5 flex items-center justify-center shrink-0">
-              <LogOut size={18} />
-            </div>
+            <LogOut size={16} />
 
             <span
               className={`
                 whitespace-nowrap
                 transition-opacity transition-transform duration-200
-                ${open
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"}
+                ${
+                  open
+                    ? "opacity-100 translate-x-0"
+                    : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"
+                }
               `}
             >
               Logout
@@ -168,9 +186,8 @@ export default function Sidebar({ open, setOpen }) {
   );
 }
 
-/* ----------------------------------
-   Sidebar Item
------------------------------------ */
+/* ================= SIDEBAR ITEM ================= */
+
 function SidebarItem({ to, icon: Icon, label, open, setOpen }) {
   return (
     <NavLink
@@ -179,8 +196,7 @@ function SidebarItem({ to, icon: Icon, label, open, setOpen }) {
       className={({ isActive }) =>
         `
           flex items-center gap-3 px-3 py-2 rounded-lg
-          text-sm font-medium
-          transition-colors
+          text-sm font-medium transition-colors
           ${
             isActive
               ? "bg-blue-50 text-slate-950"
@@ -189,17 +205,17 @@ function SidebarItem({ to, icon: Icon, label, open, setOpen }) {
         `
       }
     >
-      <div className="w-5 h-5 flex items-center justify-center shrink-0">
-        <Icon size={18} />
-      </div>
+      <Icon size={18} />
 
       <span
         className={`
           whitespace-nowrap
           transition-opacity transition-transform duration-200
-          ${open
-            ? "opacity-100 translate-x-0"
-            : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"}
+          ${
+            open
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"
+          }
         `}
       >
         {label}
@@ -208,19 +224,14 @@ function SidebarItem({ to, icon: Icon, label, open, setOpen }) {
   );
 }
 
-/* ----------------------------------
-   Dropdown Item
------------------------------------ */
+/* ================= DROPDOWN ITEM ================= */
+
 function DropdownItem({ to, label, setOpen }) {
   return (
     <NavLink
       to={to}
       onClick={() => setOpen(false)}
-      className="
-        block px-3 py-1.5 rounded-md
-        text-sm text-gray-600
-        hover:bg-gray-100
-      "
+      className="block px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100"
     >
       {label}
     </NavLink>
