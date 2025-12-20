@@ -1,13 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPage } from "../store/pageSlice";
 
-import { Search, Plus, Eye, Pencil, Trash2, Shield } from "lucide-react";
+import {
+  Search,
+  Plus,
+  Eye,
+  Pencil,
+  Trash2,
+  Shield,
+} from "lucide-react";
+
+// ✅ FIXED IMPORT NAME
+import AddAdminModal from "../components/adminUser/AddminModal.jsx";
 
 export default function AdminUsers() {
   const dispatch = useDispatch();
 
-  // 🔹 Set Navbar Page Title using Redux
+  const [showAddAdmin, setShowAddAdmin] = useState(false);
+  const [admins, setAdmins] = useState([]); // ✅ ADMIN STATE
+
+  // 🔹 Set Navbar Page Title
   useEffect(() => {
     dispatch(
       setPage({
@@ -17,16 +30,25 @@ export default function AdminUsers() {
     );
   }, [dispatch]);
 
+  // ✅ HANDLE SUBMIT FROM MODAL
+  const handleAddAdmin = (newAdmin) => {
+    setAdmins((prev) => [...prev, newAdmin]);
+  };
+
   return (
     <div className="p-6 bg-[#fffdfb] min-h-screen">
-      {/* Header */}
+
+      {/* ================= HEADER ================= */}
       <div className="bg-white rounded-xl p-6 mb-6 border border-[#E6DAD6]">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-semibold text-black">
             Admin User Management
           </h1>
 
-          <button className="flex items-center gap-2 bg-slate-950 text-white px-4 py-2 rounded-lg hover:bg-slate-950/60">
+          <button
+            onClick={() => setShowAddAdmin(true)}
+            className="flex items-center gap-2 bg-slate-950 text-white px-4 py-2 rounded-lg hover:bg-slate-950/60"
+          >
             <Plus size={16} /> Add Admin User
           </button>
         </div>
@@ -38,12 +60,12 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* ================= STATS ================= */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         {[
-          { label: "Total Admins", value: 3 },
-          { label: "Active Admins", value: 2 },
-          { label: "Inactive Admins", value: 1 },
+          { label: "Total Admins", value: admins.length },
+          { label: "Active Admins", value: admins.filter(a => a.status === "Active").length },
+          { label: "Inactive Admins", value: admins.filter(a => a.status === "Inactive").length },
           { label: "Active Modules", value: 13 },
         ].map((item, i) => (
           <div
@@ -58,7 +80,7 @@ export default function AdminUsers() {
         ))}
       </div>
 
-      {/* Search */}
+      {/* ================= SEARCH ================= */}
       <div className="bg-white p-4 rounded-xl border border-[#E6DAD6] mb-4 flex gap-3">
         <div className="flex items-center gap-2 flex-1 border border-[#E6DAD6] rounded-lg px-3">
           <Search size={16} className="text-gray-400" />
@@ -75,7 +97,7 @@ export default function AdminUsers() {
         </select>
       </div>
 
-      {/* Table */}
+      {/* ================= TABLE ================= */}
       <div className="bg-white border border-[#E6DAD6] rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-[#FBF7F5] text-gray-600">
@@ -89,35 +111,35 @@ export default function AdminUsers() {
           </thead>
 
           <tbody className="divide-y">
-            <AdminRow
-              name="John Manager"
-              email="john@admin.com"
-              status="active"
-              modules={["User Management", "Property Lists", "Feedback"]}
-            />
+            {admins.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center py-6 text-gray-500">
+                  No admin users added yet
+                </td>
+              </tr>
+            )}
 
-            <AdminRow
-              name="Sarah Support"
-              email="sarah@admin.com"
-              status="inactive"
-              modules={["Feedback", "Push Notifications"]}
-            />
-
-            <AdminRow
-              name="Super Admin"
-              email="super@admin.com"
-              status="active"
-              modules={["User Management", "Admin Users", "Subscriptions"]}
-              extra="+3"
-            />
+            {admins.map((admin) => (
+              <AdminRow key={admin.id} {...admin} />
+            ))}
           </tbody>
         </table>
       </div>
+
+      {/* ================= ADD ADMIN POPUP ================= */}
+      {showAddAdmin && (
+        <AddAdminModal
+          onClose={() => setShowAddAdmin(false)}
+          onSubmit={handleAddAdmin}
+        />
+      )}
     </div>
   );
 }
 
-function AdminRow({ name, email, status, modules, extra }) {
+/* ================= TABLE ROW ================= */
+
+function AdminRow({ name, email, status, modules = [], createdAt }) {
   return (
     <tr>
       <td className="px-5 py-4">
@@ -135,7 +157,7 @@ function AdminRow({ name, email, status, modules, extra }) {
       <td className="px-5">
         <span
           className={`px-3 py-1 rounded-full text-xs font-medium ${
-            status === "active"
+            status === "Active"
               ? "bg-green-100 text-green-600"
               : "bg-gray-100 text-gray-500"
           }`}
@@ -154,21 +176,16 @@ function AdminRow({ name, email, status, modules, extra }) {
               {m}
             </span>
           ))}
-          {extra && (
-            <span className="bg-gray-100 px-2 rounded-full text-xs">
-              {extra}
-            </span>
-          )}
         </div>
       </td>
 
-      <td className="px-5 text-gray-500">12/19/2025</td>
+      <td className="px-5 text-gray-500">{createdAt}</td>
 
       <td className="px-5">
         <div className="flex justify-end gap-3 text-gray-500">
-          <Eye size={16} />
-          <Pencil size={16} />
-          <Trash2 size={16} />
+          <Eye size={16} className="cursor-pointer hover:text-black" />
+          <Pencil size={16} className="cursor-pointer hover:text-black" />
+          <Trash2 size={16} className="cursor-pointer hover:text-red-600" />
         </div>
       </td>
     </tr>

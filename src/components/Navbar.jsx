@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 
 export default function DashboardNavbar() {
   const { title, subTitle } = useSelector((state) => state.page);
+  const [showNotifications, setShowNotifications] = useState(false);
+
 
   const [currentTime, setCurrentTime] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -52,6 +54,25 @@ export default function DashboardNavbar() {
       setIsFullscreen(false);
     }
   };
+
+ function NotificationItem({ title, description, time }) {
+  return (
+    <div className="px-3 py-2 hover:bg-gray-50 cursor-pointer">
+      <div className="flex justify-between items-start">
+        <span className="text-sm font-medium text-gray-900">
+          {title}
+        </span>
+        <span className="text-xs text-gray-400">
+          {time}
+        </span>
+      </div>
+      <p className="text-sm text-gray-600 leading-tight mt-0.5">
+        {description}
+      </p>
+    </div>
+  );
+}
+
 
   return (
     <header className="w-full bg-white border-b shadow-sm sticky top-0 z-30">
@@ -97,53 +118,141 @@ export default function DashboardNavbar() {
             )}
           </button>
 
-          <div className="relative cursor-pointer">
-            <Bell className="w-5 h-5 text-gray-600" />
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
-          </div>
 
-          {/* USER DROPDOWN */}
-          <div className="relative">
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1"
-            >
-              <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
-                <User size={18} />
-              </div>
+<div className="relative">
+  {/* Bell */}
+  <button
+    onClick={() => setShowNotifications(!showNotifications)}
+    className="relative p-2 rounded hover:bg-gray-100"
+  >
+    <Bell className="w-5 h-5 text-gray-700" />
+    <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
+  </button>
 
-              <div className="hidden sm:flex flex-col text-left">
-                <p className="text-xs font-semibold text-gray-800">John Doe</p>
-                <p className="text-[10px] text-gray-500">Admin</p>
-              </div>
+  {showNotifications && (
+    <div className="absolute right-0 mt-2 w-[380px] bg-white rounded-lg shadow-md z-50">
 
-              <ChevronDown
-                size={16}
-                className={`transition-transform ${
-                  isDropdownOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+      {/* ===== HEADER (NO BORDER) ===== */}
+      <div className="flex items-center justify-between px-3 py-2">
+        <span className="text-sm font-semibold text-gray-900">
+          Notifications
+        </span>
 
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg z-50">
-                <ul className="text-sm">
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                    My Profile
-                  </li>
-                  <li
-                    onClick={handleSignOut}
-                    className="px-4 py-2 text-red-600 hover:bg-red-100 cursor-pointer"
-                  >
-                    <LogOut size={14} />
-                    <span className="ml-2">Sign Out</span>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs bg-red-100 text-red-600 px-2 py-[2px] rounded-full">
+            2 new
+          </span>
+          <button
+            onClick={() => setShowNotifications(false)}
+            className="text-gray-400 hover:text-black text-sm"
+          >
+            ✕
+          </button>
         </div>
       </div>
-    </header>
+
+      {/* ===== LIST (NO DIVIDE LINE) ===== */}
+      <div>
+        <NotificationItem
+          title="Low Stock Alert"
+          description="Margherita Pizza ingredients running low"
+          time="2m ago"
+        />
+        <NotificationItem
+          title="Order Milestone"
+          description="Downtown branch reached 1000 orders"
+          time="15m ago"
+        />
+        <NotificationItem
+          title="System Update"
+          description="Advanced analytics dashboard available"
+          time="1h ago"
+        />
+      </div>
+
+      {/* ===== FOOTER (NO BORDER / NO GAP) ===== */}
+      <div className="flex justify-between items-center px-3 py-2 text-sm">
+        <button className="text-red-600 hover:underline">
+          Mark all as read
+        </button>
+        <button className="text-gray-700 hover:underline">
+          View all
+        </button>
+      </div>
+    </div>
+  )}
+</div>
+
+
+
+
+          {/* USER DROPDOWN */}
+        <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1"
+              >
+                <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
+                  <User size={18} />
+                </div>
+
+                <div className="hidden sm:flex flex-col text-left leading-tight">
+                  <p className="text-xs font-semibold text-gray-800">
+                    John Doe
+                  </p>
+                  <p className="text-[10px] text-gray-500">Admin</p>
+                </div>
+
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-500 transition-transform duration-200 ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                  
+                  {/* User Info */}
+                  <div className="flex items-start gap-3 px-4 py-3 border-b">
+                    <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
+                      <User size={18} />
+                    </div>
+
+                    <div className="leading-tight">
+                      <p className="text-sm font-semibold text-gray-800">
+                        John Doe
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        admin@example.com
+                      </p>
+                      <span className="inline-block mt-1 text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">
+                        Admin
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <ul className="text-sm">
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+                      <User size={14} />
+                      <span>My Profile</span>
+                    </li>
+
+                    <li
+                      onClick={handleSignOut}
+                      className="px-4 py-2 hover:bg-red-400 hover:text-white cursor-pointer flex items-center gap-2 text-red-600"
+                    >
+                      <LogOut size={14} />
+                      <span>Sign Out</span>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
   );
 }
