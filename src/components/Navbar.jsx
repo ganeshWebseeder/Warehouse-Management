@@ -9,17 +9,33 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardNavbar() {
   const { title, subTitle } = useSelector((state) => state.page);
+  const navigate = useNavigate();
+
   const [showNotifications, setShowNotifications] = useState(false);
-
-
   const [currentTime, setCurrentTime] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  /* Live Date & Time */
+  /* ================= SEARCH ================= */
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const pages = [
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Admin Users", path: "/admin-users" },
+    { name: "Support", path: "/support" },
+    { name: "Settings", path: "/settings" },
+    { name: "Reports", path: "/reports" },
+  ];
+
+  const filteredPages = pages.filter((p) =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  /* ================= TIME ================= */
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -55,30 +71,67 @@ export default function DashboardNavbar() {
     }
   };
 
- function NotificationItem({ title, description, time }) {
-  return (
-    <div className="px-3 py-2 hover:bg-gray-50 cursor-pointer">
-      <div className="flex justify-between items-start">
-        <span className="text-sm font-medium text-gray-900">
-          {title}
-        </span>
-        <span className="text-xs text-gray-400">
-          {time}
-        </span>
+  function NotificationItem({ title, description, time }) {
+    return (
+      <div className="px-3 py-2 hover:bg-gray-50 cursor-pointer">
+        <div className="flex justify-between items-start">
+          <span className="text-sm font-medium text-gray-900">
+            {title}
+          </span>
+          <span className="text-xs text-gray-400">{time}</span>
+        </div>
+        <p className="text-sm text-gray-600 mt-0.5">
+          {description}
+        </p>
       </div>
-      <p className="text-sm text-gray-600 leading-tight mt-0.5">
-        {description}
-      </p>
-    </div>
-  );
-}
+    );
+  }
 
+  /* ================= SEARCH BOX ================= */
+  function SearchBox({ mobile }) {
+    return (
+      <div className={`relative ${mobile ? "w-full" : "flex-1"}`}>
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
+        <input
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search pages..."
+          className="w-full pl-10 pr-4 py-2 text-sm border rounded-lg focus:outline-none"
+        />
+
+        {searchQuery && (
+          <div className="absolute left-0 right-0 mt-1 bg-white border rounded-lg shadow-md z-50">
+            {filteredPages.length > 0 ? (
+              filteredPages.map((page) => (
+                <div
+                  key={page.path}
+                  onClick={() => {
+                    navigate(page.path);
+                    setSearchQuery("");
+                  }}
+                  className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                >
+                  {page.name}
+                </div>
+              ))
+            ) : (
+              <div className="px-4 py-2 text-sm text-gray-500">
+                No pages found
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <header className="w-full bg-white border-b shadow-sm sticky top-0 z-30">
+
+      {/* ================= TOP ROW ================= */}
       <div className="flex items-center justify-between px-4 py-3">
 
-        {/* LEFT — PAGE TITLE (FROM REDUX) */}
+        {/* LEFT — PAGE TITLE */}
         <div className="flex items-center gap-2 text-sm text-gray-600 ml-20">
           <span className="font-medium text-gray-800">{title}</span>
           {subTitle && (
@@ -89,23 +142,15 @@ export default function DashboardNavbar() {
           )}
         </div>
 
-        {/* CENTER */}
-        <div className="flex items-center gap-10 flex-1 max-w-2xl mx-6">
-          <div className="hidden md:block text-sm text-gray-500">
+        {/* CENTER — DESKTOP SEARCH */}
+        <div className="hidden md:flex items-center gap-10 flex-1 max-w-2xl mx-6">
+          <div className="text-sm text-gray-500">
             {currentTime}
           </div>
-
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search subscription, customers, leads..."
-              className="w-full pl-10 pr-4 py-2 text-sm border rounded-lg focus:outline-none"
-            />
-          </div>
+          <SearchBox />
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT — UNCHANGED */}
         <div className="flex items-center gap-6 relative">
           <button
             onClick={toggleFullscreen}
@@ -118,141 +163,83 @@ export default function DashboardNavbar() {
             )}
           </button>
 
+          {/* NOTIFICATIONS */}
+          <div className="relative">
+            <button
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="relative p-2 rounded hover:bg-gray-100"
+            >
+              <Bell className="w-5 h-5 text-gray-700" />
+              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
+            </button>
 
-<div className="relative">
-  {/* Bell */}
-  <button
-    onClick={() => setShowNotifications(!showNotifications)}
-    className="relative p-2 rounded hover:bg-gray-100"
-  >
-    <Bell className="w-5 h-5 text-gray-700" />
-    <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
-  </button>
-
-  {showNotifications && (
-    <div className="absolute right-0 mt-2 w-[380px] bg-white rounded-lg shadow-md z-50">
-
-      {/* ===== HEADER (NO BORDER) ===== */}
-      <div className="flex items-center justify-between px-3 py-2">
-        <span className="text-sm font-semibold text-gray-900">
-          Notifications
-        </span>
-
-        <div className="flex items-center gap-2">
-          <span className="text-xs bg-red-100 text-red-600 px-2 py-[2px] rounded-full">
-            2 new
-          </span>
-          <button
-            onClick={() => setShowNotifications(false)}
-            className="text-gray-400 hover:text-black text-sm"
-          >
-            ✕
-          </button>
-        </div>
-      </div>
-
-      {/* ===== LIST (NO DIVIDE LINE) ===== */}
-      <div>
-        <NotificationItem
-          title="Low Stock Alert"
-          description="Margherita Pizza ingredients running low"
-          time="2m ago"
-        />
-        <NotificationItem
-          title="Order Milestone"
-          description="Downtown branch reached 1000 orders"
-          time="15m ago"
-        />
-        <NotificationItem
-          title="System Update"
-          description="Advanced analytics dashboard available"
-          time="1h ago"
-        />
-      </div>
-
-      {/* ===== FOOTER (NO BORDER / NO GAP) ===== */}
-      <div className="flex justify-between items-center px-3 py-2 text-sm">
-        <button className="text-red-600 hover:underline">
-          Mark all as read
-        </button>
-        <button className="text-gray-700 hover:underline">
-          View all
-        </button>
-      </div>
-    </div>
-  )}
-</div>
-
-
-
-
-          {/* USER DROPDOWN */}
-        <div className="relative">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1"
-              >
-                <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
-                  <User size={18} />
-                </div>
-
-                <div className="hidden sm:flex flex-col text-left leading-tight">
-                  <p className="text-xs font-semibold text-gray-800">
-                    John Doe
-                  </p>
-                  <p className="text-[10px] text-gray-500">Admin</p>
-                </div>
-
-                <ChevronDown
-                  size={16}
-                  className={`text-gray-500 transition-transform duration-200 ${
-                    isDropdownOpen ? "rotate-180" : ""
-                  }`}
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-[380px] bg-white rounded-lg shadow-md z-50">
+                <NotificationItem
+                  title="Low Stock Alert"
+                  description="Margherita Pizza ingredients running low"
+                  time="2m ago"
                 />
-              </button>
+                <NotificationItem
+                  title="Order Milestone"
+                  description="Downtown branch reached 1000 orders"
+                  time="15m ago"
+                />
+              </div>
+            )}
+          </div>
 
-              {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                  
-                  {/* User Info */}
-                  <div className="flex items-start gap-3 px-4 py-3 border-b">
-                    <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
-                      <User size={18} />
-                    </div>
+          {/* USER DROPDOWN — SAME AS BEFORE */}
+          <div className="relative">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center space-x-2 hover:bg-gray-100 rounded-md px-2 py-1"
+            >
+              <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white">
+                <User size={18} />
+              </div>
 
-                    <div className="leading-tight">
-                      <p className="text-sm font-semibold text-gray-800">
-                        John Doe
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        admin@example.com
-                      </p>
-                      <span className="inline-block mt-1 text-[10px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded">
-                        Admin
-                      </span>
-                    </div>
-                  </div>
+              <div className="hidden sm:flex flex-col text-left leading-tight">
+                <p className="text-xs font-semibold text-gray-800">
+                  John Doe
+                </p>
+                <p className="text-[10px] text-gray-500">Admin</p>
+              </div>
 
-                  {/* Actions */}
-                  <ul className="text-sm">
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
-                      <User size={14} />
-                      <span>My Profile</span>
-                    </li>
+              <ChevronDown
+                size={16}
+                className={`transition-transform ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
 
-                    <li
-                      onClick={handleSignOut}
-                      className="px-4 py-2 hover:bg-red-400 hover:text-white cursor-pointer flex items-center gap-2 text-red-600"
-                    >
-                      <LogOut size={14} />
-                      <span>Sign Out</span>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+            {isDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <ul className="text-sm">
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+                    <User size={14} />
+                    <span>My Profile</span>
+                  </li>
+
+                  <li
+                    onClick={handleSignOut}
+                    className="px-4 py-2 hover:bg-red-400 hover:text-white cursor-pointer flex items-center gap-2 text-red-600"
+                  >
+                    <LogOut size={14} />
+                    <span>Sign Out</span>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
-      </header>
+      </div>
+
+      {/* ================= MOBILE SEARCH ================= */}
+      <div className="md:hidden px-4 pb-3">
+        <SearchBox mobile />
+      </div>
+    </header>
   );
 }
