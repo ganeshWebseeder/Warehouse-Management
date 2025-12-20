@@ -29,7 +29,7 @@ export default function Support() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 ml-18">
       {/* Header */}
       <div className="flex justify-between items-center ml-16 md:ml-10 transition-all duration-300">
         <h1 className="text-2xl font-semibold text-black">

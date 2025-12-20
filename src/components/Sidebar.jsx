@@ -44,7 +44,7 @@ export default function Sidebar({ open, setOpen }) {
         `}
       >
         {/* Header */}
-        <div className="h-16 flex items-center gap-3 px-4 py-9 border-b">
+        <div className="h-16 flex items-center gap-3 px-4 py-9 border-b-gray-700">
           <img
             src="/WebSeederLogo.jpeg"
             alt="WebSeeder Logo"
