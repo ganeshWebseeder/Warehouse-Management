@@ -29,6 +29,7 @@ export default function DashboardNavbar() {
     { name: "Support", path: "/support" },
     { name: "Settings", path: "/settings" },
     { name: "Reports", path: "/reports" },
+    { name: "Purchase Order", path: "/purchaseorder" },
   ];
 
   const filteredPages = pages.filter((p) =>

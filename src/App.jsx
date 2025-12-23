@@ -5,6 +5,7 @@ import Layout from "./components/mainLayout/Layout.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import AdminUsers from "./pages/AdminUserManagement.jsx";
 import Support from "./pages/Support.jsx";
+import PurchaseOrder from "./pages/PurchaseOrder.jsx";
 
 function App() {
   return (
@@ -38,6 +39,14 @@ function App() {
           element={
             <Layout>
               <Support />
+            </Layout>
+          }
+        />
+        <Route
+          path="/purchaseorder"
+          element={
+            <Layout>
+              <PurchaseOrder />
             </Layout>
           }
         />
