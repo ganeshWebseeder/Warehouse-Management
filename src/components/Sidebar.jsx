@@ -99,6 +99,7 @@ export default function Sidebar({ open, setOpen, expanded, setExpanded }) {
           )}
 
           <SidebarItem to="/support" icon={FileText} label="Support" expanded={expanded} />
+          <SidebarItem to="/purchaseorder" icon={FileText} label="PurchaseOrder" expanded={expanded} />
           <SidebarItem to="/settings" icon={Settings} label="Settings" expanded={expanded} />
         </nav>
 
