@@ -8,14 +8,12 @@ import {
   ChevronRight,
   Database,
 } from "lucide-react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
-export default function Sidebar({ open, setOpen }) {
-  const navigate = useNavigate();
+export default function Sidebar({ open, setOpen, expanded, setExpanded }) {
   const [mastersOpen, setMastersOpen] = useState(false);
 
-  // ✅ FIXED LOGOUT (FORCE REDIRECT)
   const handleLogout = () => {
     localStorage.clear();
     window.location.replace("/");
@@ -23,7 +21,7 @@ export default function Sidebar({ open, setOpen }) {
 
   return (
     <>
-      {/* ================= MOBILE OVERLAY ================= */}
+      {/* ===== MOBILE OVERLAY ===== */}
       {open && (
         <div
           className="fixed inset-0 z-30 md:hidden"
@@ -31,154 +29,92 @@ export default function Sidebar({ open, setOpen }) {
         />
       )}
 
-      {/* ================= SIDEBAR ================= */}
+      {/* ===== SIDEBAR ===== */}
       <aside
+        onMouseEnter={() => setExpanded(true)}
+        onMouseLeave={() => setExpanded(false)}
         className={`
-          group fixed z-40 h-full bg-white border-r
-          transition-[width,left] duration-300 ease-in-out
-          overflow-hidden flex flex-col
-          w-64
+          fixed top-0 left-0 z-40 h-full bg-white border-r
+          transition-all duration-300 ease-in-out
+          flex flex-col overflow-hidden
+          ${expanded ? "w-64" : "w-16"}
           ${open ? "left-0" : "-left-64"}
-          md:left-0 md:w-16 md:hover:w-64
+          md:left-0
         `}
       >
-        {/* ================= HEADER ================= */}
-        <div className="h-16 flex items-center gap-3 px-4 border-b">
+        {/* ===== HEADER ===== */}
+        <div className="h-18 flex items-center gap-3 px-4 border-b">
           <img
             src="/WebSeederLogo.jpeg"
             alt="WebSeeder Logo"
             className="w-8 h-8 rounded-full"
           />
 
-          <span
-            className={`
-              text-sm font-medium whitespace-nowrap
-              transition-all duration-200
-              ${
-                open
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"
-              }
-            `}
-          >
-            WebSeeder
-          </span>
+          {expanded && (
+            <span className="text-sm font-semibold whitespace-nowrap">
+              WebSeeder
+            </span>
+          )}
 
-          <button
-            className="ml-auto md:hidden"
-            onClick={() => setOpen(false)}
-          >
+          <button className="ml-auto md:hidden" onClick={() => setOpen(false)}>
             <X size={18} />
           </button>
         </div>
 
-        {/* ================= MENU ================= */}
-        <nav className="flex-1 px-2 py-4 space-y-1">
-          <SidebarItem
-            to="/dashboard"
-            icon={LayoutDashboard}
-            label="Dashboard"
-            open={open}
-            setOpen={setOpen}
-          />
+        {/* ===== MENU ===== */}
+        <nav className="flex-1 py-4 space-y-1 px-2">
+          <SidebarItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" expanded={expanded} />
+          <SidebarItem to="/admin-users" icon={Users} label="Admin Users" expanded={expanded} />
 
-          <SidebarItem
-            to="/admin-users"
-            icon={Users}
-            label="Admin Users"
-            open={open}
-            setOpen={setOpen}
-          />
-
-          {/* ===== Masters Dropdown ===== */}
-          <div
-            onMouseEnter={() => !open && setMastersOpen(true)}
-            onMouseLeave={() => !open && setMastersOpen(false)}
+          {/* ===== MASTERS ===== */}
+          <button
+            onClick={() => setMastersOpen(!mastersOpen)}
+            className={`
+              w-full h-10 flex items-center rounded-lg
+              text-sm font-medium text-gray-600
+              hover:bg-gray-100 transition-all
+              ${expanded ? "px-3 gap-3" : "justify-center"}
+            `}
           >
-            <button
-              onClick={() => setMastersOpen(!mastersOpen)}
-              className="
-                w-full flex items-center gap-3 px-3 py-2 rounded-lg
-                text-sm font-medium text-gray-600
-                hover:bg-gray-100 transition-colors
-              "
-            >
-              <Database size={18} />
+            <Database size={20} />
 
-              <span
-                className={`
-                  whitespace-nowrap
-                  transition-opacity duration-200
-                  ${open ? "opacity-100" : "opacity-0 md:group-hover:opacity-100"}
-                `}
-              >
-                Masters
-              </span>
+            {expanded && <span>Masters</span>}
 
+            {expanded && (
               <ChevronRight
                 size={16}
-                className={`
-                  ml-auto transition-transform duration-200
-                  ${mastersOpen ? "rotate-90" : ""}
-                  ${open ? "opacity-100" : "opacity-0 md:group-hover:opacity-100"}
-                `}
+                className={`ml-auto transition-transform ${
+                  mastersOpen ? "rotate-90" : ""
+                }`}
               />
-            </button>
-
-            {mastersOpen && (
-              <div className="ml-9 mt-1 space-y-1 border-l border-gray-200 pl-3">
-                <DropdownItem to="/masters/item-master" label="Item Master" setOpen={setOpen} />
-                <DropdownItem to="/masters/create-item" label="Create Item" setOpen={setOpen} />
-                <DropdownItem to="/masters/unit-master" label="Unit Master" setOpen={setOpen} />
-              </div>
             )}
-          </div>
+          </button>
 
-          <SidebarItem
-            to="/support"
-            icon={FileText}
-            label="Support"
-            open={open}
-            setOpen={setOpen}
-          />
+          {expanded && mastersOpen && (
+            <div className="ml-9 mt-1 space-y-1 border-l pl-3">
+              <DropdownItem to="/masters/item-master" label="Item Master" />
+              <DropdownItem to="/masters/create-item" label="Create Item" />
+              <DropdownItem to="/masters/unit-master" label="Unit Master" />
+            </div>
+          )}
 
-          <SidebarItem
-            to="/settings"
-            icon={Settings}
-            label="Settings"
-            open={open}
-            setOpen={setOpen}
-          />
+          <SidebarItem to="/support" icon={FileText} label="Support" expanded={expanded} />
+          <SidebarItem to="/settings" icon={Settings} label="Settings" expanded={expanded} />
         </nav>
 
-        {/* ================= LOGOUT ================= */}
-        <div className="px-1 py-1 border-t">
+        {/* ===== LOGOUT ===== */}
+        <div className="border-t p-2">
           <button
-            onClick={(e) => {
-              e.stopPropagation(); // ✅ prevent overlay interference
-              handleLogout();
-            }}
-            className="
-              w-full flex items-center gap-3 px-3 py-2 rounded-lg
+            onClick={handleLogout}
+            className={`
+              w-full h-10 flex items-center rounded-lg
               text-sm font-medium text-red-600
-              hover:bg-red-300 transition-colors
-            "
+              hover:bg-red-100 transition-all
+              ${expanded ? "px-3 gap-3" : "justify-center"}
+            `}
           >
-            <LogOut size={16} />
-
-            <span
-              className={`
-                whitespace-nowrap
-                transition-opacity transition-transform duration-200
-                ${
-                  open
-                    ? "opacity-100 translate-x-0"
-                    : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"
-                }
-              `}
-            >
-              Logout
-            </span>
+            <LogOut size={20} />
+            {expanded && <span>Logout</span>}
           </button>
         </div>
       </aside>
@@ -186,51 +122,31 @@ export default function Sidebar({ open, setOpen }) {
   );
 }
 
-/* ================= SIDEBAR ITEM ================= */
-
-function SidebarItem({ to, icon: Icon, label, open, setOpen }) {
+/* ===== SIDEBAR ITEM ===== */
+function SidebarItem({ to, icon: Icon, label, expanded }) {
   return (
     <NavLink
       to={to}
-      onClick={() => setOpen(false)}
       className={({ isActive }) =>
         `
-          flex items-center gap-3 px-3 py-2 rounded-lg
-          text-sm font-medium transition-colors
-          ${
-            isActive
-              ? "bg-blue-50 text-slate-950"
-              : "text-gray-600 hover:bg-gray-100"
-          }
+          h-10 flex items-center rounded-lg
+          text-sm font-medium transition-all
+          ${expanded ? "px-3 gap-3" : "justify-center"}
+          ${isActive ? "bg-blue-50 text-slate-950" : "text-gray-600 hover:bg-gray-100"}
         `
       }
     >
-      <Icon size={18} />
-
-      <span
-        className={`
-          whitespace-nowrap
-          transition-opacity transition-transform duration-200
-          ${
-            open
-              ? "opacity-100 translate-x-0"
-              : "opacity-0 -translate-x-2 md:group-hover:opacity-100 md:group-hover:translate-x-0"
-          }
-        `}
-      >
-        {label}
-      </span>
+      <Icon size={20} />
+      {expanded && <span>{label}</span>}
     </NavLink>
   );
 }
 
-/* ================= DROPDOWN ITEM ================= */
-
-function DropdownItem({ to, label, setOpen }) {
+/* ===== DROPDOWN ITEM ===== */
+function DropdownItem({ to, label }) {
   return (
     <NavLink
       to={to}
-      onClick={() => setOpen(false)}
       className="block px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100"
     >
       {label}
