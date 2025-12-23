@@ -28,7 +28,7 @@ export default function CreateTicketForm({ onClose, onSubmit }) {
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       
       {/* ===== MODAL CONTAINER ===== */}
-      <div className="bg-white w-full max-w-2xl rounded-lg shadow-xl flex flex-col max-h-[90vh]">
+      <div className="bg-white w-200 max-w-3xl rounded-xl shadow-xl flex flex-col max-h-[80vh]">
         
         {/* ================= HEADER ================= */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
