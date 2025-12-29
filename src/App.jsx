@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import AdminUsers from "./pages/AdminUserManagement.jsx";
 import Support from "./pages/Support.jsx";
 import PurchaseOrder from "./pages/PurchaseOrder.jsx";
+import MaterialRequisition from "./pages/MaterialRequisition.jsx";
 
 function App() {
   return (
@@ -33,8 +34,8 @@ function App() {
             </Layout>
           }
         />
-     
-      <Route
+
+        <Route
           path="/support"
           element={
             <Layout>
@@ -42,6 +43,7 @@ function App() {
             </Layout>
           }
         />
+
         <Route
           path="/purchaseorder"
           element={
@@ -50,6 +52,14 @@ function App() {
             </Layout>
           }
         />
+      <Route
+        path="/materialrequisition"
+        element={
+          <Layout>
+            <MaterialRequisition />
+          </Layout>
+        }
+      />
       </Routes>
     </BrowserRouter>
   );
