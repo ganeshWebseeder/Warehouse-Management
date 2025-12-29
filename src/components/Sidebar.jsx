@@ -1,7 +1,10 @@
 import {
   LayoutDashboard,
   Users,
+  ShoppingCart,
   FileText,
+  Package,
+  LifeBuoy,
   Settings,
   X,
   LogOut,
@@ -63,8 +66,18 @@ export default function Sidebar({ open, setOpen, expanded, setExpanded }) {
 
         {/* ===== MENU ===== */}
         <nav className="flex-1 py-4 space-y-1 px-2">
-          <SidebarItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" expanded={expanded} />
-          <SidebarItem to="/admin-users" icon={Users} label="Admin Users" expanded={expanded} />
+          <SidebarItem
+            to="/dashboard"
+            icon={LayoutDashboard}
+            label="Dashboard"
+            expanded={expanded}
+          />
+          <SidebarItem
+            to="/admin-users"
+            icon={Users}
+            label="Admin Users"
+            expanded={expanded}
+          />
 
           {/* ===== MASTERS ===== */}
           <button
@@ -98,9 +111,30 @@ export default function Sidebar({ open, setOpen, expanded, setExpanded }) {
             </div>
           )}
 
-          <SidebarItem to="/support" icon={FileText} label="Support" expanded={expanded} />
-          <SidebarItem to="/purchaseorder" icon={FileText} label="PurchaseOrder" expanded={expanded} />
-          <SidebarItem to="/settings" icon={Settings} label="Settings" expanded={expanded} />
+          <SidebarItem
+            to="/materialrequisition"
+            icon={Package}
+            label="MaterialRequisition"
+            expanded={expanded}
+          />
+          <SidebarItem
+            to="/purchaseorder"
+            icon={ShoppingCart}
+            label="PurchaseOrder"
+            expanded={expanded}
+          />
+          <SidebarItem
+            to="/support"
+            icon={LifeBuoy}
+            label="Support"
+            expanded={expanded}
+          />
+          <SidebarItem
+            to="/settings"
+            icon={Settings}
+            label="Settings"
+            expanded={expanded}
+          />
         </nav>
 
         {/* ===== LOGOUT ===== */}
@@ -133,7 +167,11 @@ function SidebarItem({ to, icon: Icon, label, expanded }) {
           h-10 flex items-center rounded-lg
           text-sm font-medium transition-all
           ${expanded ? "px-3 gap-3" : "justify-center"}
-          ${isActive ? "bg-blue-50 text-slate-950" : "text-gray-600 hover:bg-gray-100"}
+          ${
+            isActive
+              ? "bg-blue-50 text-slate-950"
+              : "text-gray-600 hover:bg-gray-100"
+          }
         `
       }
     >
