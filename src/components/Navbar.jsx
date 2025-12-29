@@ -30,6 +30,7 @@ export default function DashboardNavbar() {
     { name: "Settings", path: "/settings" },
     { name: "Reports", path: "/reports" },
     { name: "Purchase Order", path: "/purchaseorder" },
+    {name: "Material Requisition", path: "/materialrequisition" }
   ];
 
   const filteredPages = pages.filter((p) =>
