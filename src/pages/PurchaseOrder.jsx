@@ -33,7 +33,7 @@ export default function PurchaseOrder() {
   };
 
   return (
-    <div className="p-6 ml-18">
+    <div className="p-6 ml-18 space-y-3">
 
       {/* ===== LIST PAGE ===== */}
       {!open && (

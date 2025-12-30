@@ -35,7 +35,7 @@ export default function MaterialRequisition() {
 
   return (
    
-    <div className="p-6 ml-18">
+    <div className="p-6 ml-18 space-y-3">
       {/* ===== LIST PAGE ===== */}
       {!open && (
         <>
@@ -43,6 +43,7 @@ export default function MaterialRequisition() {
             title=" All Material Requisition"
             onAdd={() => setOpen(true)}
           />
+          
           <MaterialTable data={materials} />
         </>
       )}
