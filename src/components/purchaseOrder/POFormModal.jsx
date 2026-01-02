@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { X } from "lucide-react";
 
 export default function POFormModal({ onClose, onSave }) {
 
@@ -65,14 +65,11 @@ export default function POFormModal({ onClose, onSave }) {
       <div className="bg-white w-200 max-w-3xl rounded-xl shadow-xl flex flex-col max-h-[80vh]">
 
         {/* ================= HEADER ================= */}
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <ArrowLeft
-            className="cursor-pointer"
-            onClick={onClose}
-          />
-          <h2 className="text-xl font-semibold">
-            Create Purchase Order
-          </h2>
+          <div className="flex items-center justify-between px-6 py-4 border-b">
+          <h2 className="text-lg font-semibold">Create Purchase Order</h2>
+          <button onClick={onClose}>
+            <X className="text-gray-500 hover:text-black" />
+          </button>
         </div>
 
         {/* ================= BODY ================= */}
