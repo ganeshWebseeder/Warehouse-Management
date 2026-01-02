@@ -2,7 +2,7 @@ import POItemRow from "./POItemRow";
 
 export default function POTable({ data }) {
   return (
-    <div className="bg-white border border-[#E6DAD6] rounded-xl overflow-hidden">
+    <div className="bg-white border rounded-xl overflow-hidden">
 
       <table className="w-full border-collapse">
 

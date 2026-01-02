@@ -2,26 +2,26 @@ import MRItemRow from "./MaterialItemRow.jsx";
 
 export default function MRTable({ data }) {
   return (
-   <div className="bg-white border border-[#E6DAD6] rounded-xl overflow-hidden">
+   <div className="bg-white border rounded-xl overflow-hidden">
 
-      <table className="w-full border-collapse">
+      <table className="w-full border-sm">
         {/* ===== TABLE HEADER ===== */}
          <thead className="bg-[#FBF7F5] text-gray-600">
           <tr>
-            <th className="p-2">SR NO</th>
-            <th className="p-2">MR No</th>
-            <th className="p-2">MR Date</th>
-            <th className="p-2">From</th>
-            <th className="p-2">Items For</th>
-            <th className="p-2">Item Code</th>
-            <th className="p-2">Item Name</th>
-            <th className="p-2">Item Unit</th>
-            <th className="p-2">Req Qty</th>
-            <th className="p-2">Stock In Store</th>
-            <th className="p-2">Approved Qty</th>
-            <th className="p-2">Inspection</th>
-            <th className="p-2">Status</th>
-            <th className="p-2">Action</th>
+            <th className="text-right px-5 py-3">SR NO</th>
+            <th className="text-right px-5 py-3">MR No</th>
+            <th className="text-right px-5 py-3">MR Date</th>
+            <th className="text-right px-5 py-3">From</th>
+            <th className="text-right px-5 py-3">Items For</th>
+            <th className="text-right px-5 py-3">Item Code</th>
+            <th className="text-right px-5 py-3">Item Name</th>
+            <th className="text-right px-5 py-3">Item Unit</th>
+            <th className="text-right px-5 py-3">Req Qty</th>
+            <th className="text-right px-5 py-3">Stock In Store</th>
+            <th className="text-right px-5 py-3">Approved Qty</th>
+            <th className="text-right px-5 py-3">Inspection</th>
+            <th className="text-right px-5 py-3">Status</th>
+            <th className="text-right px-5 py-3">Action</th>
           </tr>
         </thead>
 
