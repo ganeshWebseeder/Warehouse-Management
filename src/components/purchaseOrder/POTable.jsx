@@ -1,13 +1,12 @@
 import POItemRow from "./POItemRow";
 
-export default function POTable({ data }) {
+export default function POTable({ data, onAction }) {
   return (
     <div className="bg-white border rounded-xl overflow-hidden">
-
       <table className="w-full border-collapse">
 
         {/* TABLE HEADER */}
-        <thead className="bg-[#FBF7F5] text-gray-600">
+        <thead className="bg-[#FBF7F5] text-gray-600 text-sm">
           <tr>
             <th className="p-2">SR NO</th>
             <th className="p-2">Date</th>
@@ -29,7 +28,10 @@ export default function POTable({ data }) {
         <tbody>
           {data.length === 0 && (
             <tr>
-              <td colSpan="13" className="p-6 text-center text-gray-500">
+              <td
+                colSpan={13}
+                className="p-6 text-center text-gray-500"
+              >
                 No Purchase Orders Found
               </td>
             </tr>
@@ -40,7 +42,7 @@ export default function POTable({ data }) {
               key={row.id}
               row={row}
               index={index}
-              onAction={() => console.log("Action clicked", row)}
+              onAction={onAction}
             />
           ))}
         </tbody>
